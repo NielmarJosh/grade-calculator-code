@@ -1,80 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grade Calculator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
         }
         .container {
-            width: 50%;
-            margin: 40px auto;
+            background-color: #001f3f; /* Navy blue */
             padding: 20px;
-            border: 1px solid #ccc;
+            margin: 50px auto;
+            width: 300px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: white; /* Text color for better contrast */
         }
-        label {
-            display: block;
-            margin-bottom: 10px;
+        .input-field {
+            margin: 10px 0;
         }
-        input[type="number"] {
-            width: 100%;
-            height: 30px;
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
-        button[type="submit"] {
-            width: 100%;
-            height: 30px;
+        .calculate-btn, .restart-btn {
             background-color: #4CAF50;
-            color: #fff;
-            padding: 10px;
+            color: white;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
-        button[type="submit"]:hover {
-            background-color: #3e8e41;
-        }
         .result {
+            background-color: #000000;
+            padding: 10px;
             margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Grade Calculator</h2>
-        <form id="grade-form">
-            <label for="prelim-grade">Prelim Grade:</label>
-            <input type="number" id="prelim-grade" name="prelim-grade" required>
-
-            <button type="submit">Calculate Grade</button>
-        </form>
+        <div class="input-field">
+            <label for="prelim-grade">Enter the Prelim Grade:</label>
+            <input type="number" id="prelim-grade" min="0" max="100">
+        </div>
+        <button class="calculate-btn" onclick="calculateGrade()">Calculate</button>
         <div class="result" id="result"></div>
+        <button class="restart-btn" onclick="restart()">Restart</button>
     </div>
 
     <script>
-        const form = document.getElementById('grade-form');
-        form.addEventListener('submit', calculateGrade);
-
-        function calculateGrade(event) {
-            event.preventDefault();
+        function calculateGrade() {
             const prelimGrade = parseFloat(document.getElementById('prelim-grade').value);
-
-            const overallGrade = prelimGrade; // Since only prelim grade is considered
-
-            const resultDiv = document.getElementById('result');
-            if (overallGrade < 75) {
-                resultDiv.innerText = Failed. The passing grade is 75.;
-            } else if (overallGrade >= 90) {
-                resultDiv.innerText = Congratulations, you are a Dean's Lister! Your overall grade is ${overallGrade.toFixed(2)}.;
-            } else {
-                resultDiv.innerText = Congratulations, you passed! Your overall grade is ${overallGrade.toFixed(2)}.;
+            if (isNaN(prelimGrade) || prelimGrade < 0 || prelimGrade > 100) {
+                alert('Please enter a valid grade between 0 and 100.');
+                return;
             }
+            const requiredMidtermGrade = (75 - (prelimGrade * 0.4)) / 0.6;
+            const requiredFinalGrade = (90 - (prelimGrade * 0.4)) / 0.6;
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <p>Prelim Grade: ${prelimGrade.toFixed(2)}%</p>
+                <p>Required Midterm Grade to Pass: ${requiredMidtermGrade.toFixed(2)}%</p>
+                <p>Required Final Grade to Pass: ${requiredFinalGrade.toFixed(2)}%</p>
+                <p>${requiredMidtermGrade < 90 ? 'You have a chance to pass! The required grade is below 90%.' : 'It might be challenging to pass as the required grade is above 90%.'}</p>
+                <p>${requiredFinalGrade >= 90 ? 'Congratulations! You qualify for the Dean\'s List!' : 'Keep pushing! Aim for the Dean\'s List next time!'}</p>
+            `;
+        }
+
+        function restart() {
+            document.getElementById('prelim-grade').value = '';
+            document.getElementById('result').innerHTML = '';
         }
     </script>
 </body>
