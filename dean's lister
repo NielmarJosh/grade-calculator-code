@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grade Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 50%;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="number"] {
+            width: 100%;
+            height: 30px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        button[type="submit"] {
+            width: 100%;
+            height: 30px;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Grade Calculator</h2>
+        <form id="grade-form">
+            <label for="prelim-grade">Prelim Grade:</label>
+            <input type="number" id="prelim-grade" name="prelim-grade" required>
+
+            <button type="submit">Calculate Grade</button>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('grade-form');
+        form.addEventListener('submit', calculateGrade);
+
+        function calculateGrade(event) {
+            event.preventDefault();
+            const prelimGrade = parseFloat(document.getElementById('prelim-grade').value);
+
+            const overallGrade = prelimGrade; // Since only prelim grade is considered
+
+            const resultDiv = document.getElementById('result');
+            if (overallGrade < 75) {
+                resultDiv.innerText = Failed. The passing grade is 75.;
+            } else if (overallGrade >= 90) {
+                resultDiv.innerText = Congratulations, you are a Dean's Lister! Your overall grade is ${overallGrade.toFixed(2)}.;
+            } else {
+                resultDiv.innerText = Congratulations, you passed! Your overall grade is ${overallGrade.toFixed(2)}.;
+            }
+        }
+    </script>
+</body>
+</html>
